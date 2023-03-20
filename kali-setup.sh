@@ -6,28 +6,25 @@ YELLOW='\033[1;33m'
 BLUE='\033[1;35m'
 NC='\033[0m'
 
-success=0
-fail=0
-
-yum update -y && yum install wget -y
-
 
 echo
 echo -e "${BLUE}OSCP Kali - Setup Script${NC}"
+apt update -y
+apt upgrade -y
 
 
 ######### PACKAGES ##########
 echo
 echo -e "${RED}Packages${NC} Installing common packages"
-sudo apt install -y ltrace strace edb-debugger wireshark elfutils tldr steghide feroxbuster gobuster terminator gdb checksec default-jdk wireless-tools iw aircrack-ng responder openvpn gcc-multilib
+apt install -y ltrace strace edb-debugger wireshark elfutils tldr steghide feroxbuster gobuster terminator gdb checksec default-jdk wireless-tools iw aircrack-ng responder openvpn gcc-multilib
 
 
 ######### TOOLS ##########
 echo
 echo -e "${RED}Tools${NC} Setting up Tool Directories"
-sudo mkdir /tools
-sudo cp -r ./tools /
-sudo chown -R kali: /tools
+mkdir /tools
+cp -r ./tools /
+chown -R kali: /tools
 
 echo
 echo -e "${RED}Softlink Tools${NC} Creating Softlink to Tools bin directory"
@@ -115,6 +112,8 @@ Terminal=false
 StartupNotify=false
 EOF
 
+chown -R kali: /home/kali/Desktop
+
 # Make executable bins
 gio set -t string /home/kali/Desktop/burpsuite.desktop metadata::xfce-exe-checksum "$(sha256sum /home/kali/Desktop/burpsuite.desktop | awk '{print $1}')"
 gio set -t string /home/kali/Desktop/edb-debugger.desktop metadata::xfce-exe-checksum "$(sha256sum /home/kali/Desktop/edb-debugger.desktop | awk '{print $1}')"
@@ -126,4 +125,4 @@ gio set -t string /home/kali/Desktop/wireshark.desktop metadata::xfce-exe-checks
 ########### CLEANUP ###########
 echo
 echo -e "${RED}Cleanup${NC} Cleaning up apt"
-sudo apt -y autoremove && sudo apt -y clean all
+apt -y autoremove && sudo apt -y clean all
